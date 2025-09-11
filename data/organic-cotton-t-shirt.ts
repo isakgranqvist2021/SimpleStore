@@ -1,4 +1,6 @@
-export const product = {
+import { Product } from 'types/product';
+
+export const product: Product = {
   id: '1',
   name: 'Organic Cotton T-Shirt',
 
@@ -17,6 +19,7 @@ The crisp white fabric serves as a clean canvas for the bold blue granqvist.dev 
     'https://storage.googleapis.com/public_cdn_bucket/product_images/granqvist-dev-shirt/unisex-organic-cotton-t-shirt-white-left-68c1894c2e622.png',
     'https://storage.googleapis.com/public_cdn_bucket/product_images/granqvist-dev-shirt/unisex-organic-cotton-t-shirt-white-right-68c1894c2e9c6.png',
   ],
+
   options: [
     {
       id: 'size',
@@ -24,6 +27,19 @@ The crisp white fabric serves as a clean canvas for the bold blue granqvist.dev 
       values: ['S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'],
     },
   ],
-};
 
-export type ProductOptions = typeof product.options;
+  reviews: [
+    {
+      id: '1',
+      rating: 5,
+    },
+    {
+      id: '2',
+      rating: 5,
+    },
+    {
+      id: '3',
+      rating: 5,
+    },
+  ],
+};

@@ -1,11 +1,11 @@
 'use client';
 
-import { ProductOptions } from 'data/products';
 import { useContinueToPayment } from 'hooks/use-continue-to-payment';
 import React from 'react';
+import { ProductOption } from 'types/product';
 
 interface PickProductOptionsProps {
-  options: ProductOptions;
+  options: ProductOption[];
   email?: string;
 }
 
