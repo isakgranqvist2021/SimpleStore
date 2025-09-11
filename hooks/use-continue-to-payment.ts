@@ -2,7 +2,7 @@ import React from 'react';
 import getStripe from 'services/stripe';
 import { toast } from 'sonner';
 
-export function useContinueToPayment() {
+export function useContinueToPayment(productId: string) {
   const [isLoading, setIsLoading] = React.useState(false);
 
   const continueToPayment = async (options: Record<string, string>) => {
@@ -16,7 +16,7 @@ export function useContinueToPayment() {
     }
 
     const res = await fetch('/api/cart/checkout', {
-      body: JSON.stringify({ options }),
+      body: JSON.stringify({ options, productId }),
       method: 'POST',
     }).then((res) => res.json());
 

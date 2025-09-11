@@ -11,10 +11,12 @@ export interface ProductReview {
 
 export interface Product {
   id: string;
+  slug: string;
   name: string;
   price: number;
   compareAtPrice: number | null;
   description: string;
+  shortDescription: string;
   images: string[];
   options: ProductOption[];
   reviews: ProductReview[];

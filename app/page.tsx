@@ -1,97 +1,37 @@
-import { ImagePicker } from 'components/image-picker';
-import { product } from 'data/organic-cotton-t-shirt';
-import React from 'react';
-import { formatCurrency } from 'utils';
-import { PickProductOptions } from 'components/pick-product-options';
-import { auth0 } from 'lib/auth0';
-import { ProductRating } from 'components/product-rating';
+import { getProducts } from 'data';
 import Link from 'next/link';
+import { formatCurrency } from 'utils';
 
-export const metadata = {
-  title: product.name,
-  description: product.description,
-};
-
-export default async function Home() {
-  const session = await auth0.getSession();
+export default function HomePage() {
+  const products = getProducts();
 
   return (
-    <div>
-      <section className="container mx-auto px-2 py-8">
-        <div className="flex gap-4 flex-col md:flex-row justify-center">
-          <div>
-            <ImagePicker images={product.images} />
-          </div>
-
-          <div className="w-full flex flex-col gap-4 py-6 px-2 md:px-12 max-w-lg">
-            <h2 className="font-bold text-3xl">{product.name}</h2>
-
-            <div className="flex">
-              <span>{formatCurrency(product.price)}</span>
-              {product.compareAtPrice && (
-                <span className="line-through text-muted-foreground ml-2">
-                  {formatCurrency(product.compareAtPrice)}
-                </span>
-              )}
+    <section className="container mx-auto px-2 py-8">
+      <div className="grid gap-4 grid-cols-[repeat(auto-fill,minmax(250px,1fr))]">
+        {products.map((product) => (
+          <Link
+            href={`/products/${product.slug}`}
+            className="card bg-base-100 shadow-xl"
+            key={product.id}
+          >
+            <figure>
+              <img src={product.images[0]} alt={product.name} />
+            </figure>
+            <div className="card-body">
+              <div className="flex">
+                <span>{formatCurrency(product.price)}</span>
+                {product.compareAtPrice && (
+                  <span className="line-through text-muted-foreground ml-2">
+                    {formatCurrency(product.compareAtPrice)}
+                  </span>
+                )}
+              </div>
+              <h2 className="card-title">{product.name}</h2>
+              <p>{product.shortDescription}</p>
             </div>
-
-            <div className="flex gap-1">
-              <ProductRating reviews={product.reviews} />
-            </div>
-
-            <p className="whitespace-pre-wrap text-sm">{product.description}</p>
-
-            <PickProductOptions
-              email={session?.user?.email}
-              options={product.options}
-            />
-          </div>
-        </div>
-      </section>
-
-      <section className="container mx-auto px-2 py-8">
-        <h3 className="font-bold text-2xl mb-6">Frequently Asked Questions</h3>
-
-        <div className="join join-vertical bg-base-100 w-full">
-          <div className="collapse collapse-arrow join-item border-base-300 border">
-            <input type="radio" name="my-accordion-4" defaultChecked />
-            <div className="collapse-title font-semibold">
-              What is the return policy?
-            </div>
-            <div className="collapse-content text-sm">
-              We offer a no questions asked return policy within 30 days of
-              purchase. If you are not completely satisfied with your purchase,
-              you can return the item for a full refund.
-            </div>
-          </div>
-          <div className="collapse collapse-arrow join-item border-base-300 border">
-            <input type="radio" name="my-accordion-4" />
-            <div className="collapse-title font-semibold">
-              How long does shipping take?
-            </div>
-            <div className="collapse-content text-sm">
-              Shipping times vary depending on your location. You can see all
-              shipping times here:
-              <Link className="link ml-2" href="/company/shipping">
-                Shipping Policy
-              </Link>
-            </div>
-          </div>
-          <div className="collapse collapse-arrow join-item border-base-300 border">
-            <input type="radio" name="my-accordion-4" />
-            <div className="collapse-title font-semibold">
-              Do you use cookies on the website?
-            </div>
-            <div className="collapse-content text-sm">
-              Yes, we use cookies to enhance your experience. You can read more
-              about our use of cookies here:
-              <Link className="link ml-2" href="/legal/cookie-policy">
-                Cookie Policy
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-    </div>
+          </Link>
+        ))}
+      </div>
+    </section>
   );
 }

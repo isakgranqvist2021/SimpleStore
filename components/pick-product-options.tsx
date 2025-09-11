@@ -7,12 +7,15 @@ import { ProductOption } from 'types/product';
 interface PickProductOptionsProps {
   options: ProductOption[];
   email?: string;
+  productId: string;
 }
 
 export function PickProductOptions(props: PickProductOptionsProps) {
   const [state, setState] = React.useState<Record<string, string>>({});
 
-  const { isLoading, continueToPayment } = useContinueToPayment();
+  const { isLoading, continueToPayment } = useContinueToPayment(
+    props.productId,
+  );
 
   return (
     <React.Fragment>

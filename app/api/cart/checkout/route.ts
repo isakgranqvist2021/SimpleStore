@@ -1,11 +1,13 @@
 import { allowedCountries } from 'config';
-import { product } from 'data/organic-cotton-t-shirt';
+import { getProductById } from 'data';
 import { auth0 } from 'lib/auth0';
 import { createCheckoutSession } from 'services/payment';
 import Stripe from 'stripe';
+import { Product } from 'types/product';
 import z from 'zod';
 
 function getStripeCheckoutParams(params: {
+  product: Product;
   options: Record<string, string>;
   email?: string;
   redirectUrl?: string;
@@ -19,10 +21,10 @@ function getStripeCheckoutParams(params: {
       {
         price_data: {
           currency: 'EUR',
-          unit_amount: product.price,
+          unit_amount: params.product.price,
           product_data: {
-            name: product.name,
-            images: product.images,
+            name: params.product.name,
+            images: params.product.images,
             metadata: params.options,
           },
         },
@@ -52,11 +54,23 @@ function getStripeCheckoutParams(params: {
 
 const checkoutSchema = z.object({
   options: z.record(z.string(), z.string()),
+  productId: z.string(),
 });
 
 export async function POST(req: Request) {
   try {
     const parsedCheckoutParams = checkoutSchema.parse(await req.json());
+    const product = getProductById(parsedCheckoutParams.productId);
+
+    if (!product) {
+      return new Response(
+        JSON.stringify({
+          statusCode: 400,
+          message: 'Product not found',
+        }),
+        { status: 400 },
+      );
+    }
 
     const session = await auth0.getSession();
 
@@ -66,6 +80,7 @@ export async function POST(req: Request) {
       email: session?.user?.email,
       redirectUrl,
       options: parsedCheckoutParams.options,
+      product,
     });
 
     const checkoutSession = await createCheckoutSession(checkoutSessionParams);
