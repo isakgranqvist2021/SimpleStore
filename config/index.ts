@@ -3,6 +3,8 @@ import Stripe from 'stripe';
 export const storeConfig = {
   name: 'One Product Store',
   slogan: 'The best product in the world',
+  title: 'One Product Store - Buy the best product in the world',
+  description: 'One product store selling the best product in the world.',
 
   contactEmail: 'support@example.com',
 };
