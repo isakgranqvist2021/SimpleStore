@@ -32,7 +32,7 @@ function getStripeCheckoutParams(params: {
       },
     ],
     success_url: `${params.redirectUrl}/payment/accepted?checkoutSessionId={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${params.redirectUrl}/payment/rejected`,
+    cancel_url: `${params.redirectUrl}/payment/rejected?checkoutSessionId={CHECKOUT_SESSION_ID}`,
 
     shipping_options: [
       {

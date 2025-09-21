@@ -7,6 +7,14 @@ export const storeConfig = {
   description: 'One product store selling the best product in the world.',
 
   contactEmail: 'support@example.com',
+
+  socialMedia: {
+    twitter: 'https://www.twitter.com/yourstore',
+    youtube: 'https://www.youtube.com/yourstore',
+    facebook: 'https://www.facebook.com/yourstore',
+    instagram: 'https://www.instagram.com/yourstore',
+    pinterest: 'https://www.pinterest.com/yourstore',
+  },
 };
 
 const shipping: Partial<

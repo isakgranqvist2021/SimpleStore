@@ -7,8 +7,12 @@ import { auth0 } from 'lib/auth0';
 import { ProductRating } from 'components/product-rating';
 import Link from 'next/link';
 import { PageProps } from 'types/page';
+import { Metadata } from 'next';
+import { redirect } from 'next/navigation';
 
-export async function generateMetadata(props: PageProps<{ slug: string }>) {
+export async function generateMetadata(
+  props: PageProps<{ slug: string }>,
+): Promise<Metadata> {
   const params = await props.params;
   const product = getProductBySlug(params.slug);
 
@@ -19,6 +23,18 @@ export async function generateMetadata(props: PageProps<{ slug: string }>) {
   return {
     title: product.name,
     description: product.description,
+    openGraph: {
+      title: product.name,
+      description: product.description,
+      images: product.images,
+      url: `${process.env.APP_BASE_URL}/products/${product.slug}`,
+    },
+    twitter: {
+      title: product.name,
+      description: product.description,
+      images: product.images,
+      card: 'summary_large_image',
+    },
   };
 }
 
@@ -28,7 +44,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
 
   const product = getProductBySlug(params.slug);
   if (!product) {
-    return <div>Product not found</div>;
+    return redirect('/');
   }
 
   return (

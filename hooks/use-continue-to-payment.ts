@@ -1,19 +1,14 @@
 import React from 'react';
-import getStripe from 'services/stripe';
 import { toast } from 'sonner';
+import { useRedirectToStripe } from './use-redirect-to-stripe';
 
 export function useContinueToPayment(productId: string) {
   const [isLoading, setIsLoading] = React.useState(false);
 
+  const redirectToStripe = useRedirectToStripe();
+
   const continueToPayment = async (options: Record<string, string>) => {
     setIsLoading(true);
-
-    const stripe = await getStripe();
-    if (!stripe) {
-      toast.error('Something went wrong, please try again later.');
-      setIsLoading(false);
-      return;
-    }
 
     const res = await fetch('/api/cart/checkout', {
       body: JSON.stringify({ options, productId }),
@@ -26,7 +21,13 @@ export function useContinueToPayment(productId: string) {
       return;
     }
 
-    await stripe.redirectToCheckout({ sessionId: res.sessionId });
+    try {
+      await redirectToStripe(res.sessionId);
+    } catch (err) {
+      toast.error('Something went wrong, please try again later.');
+      setIsLoading(false);
+      return;
+    }
 
     setIsLoading(false);
   };
