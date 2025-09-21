@@ -6,14 +6,14 @@ export function Footer() {
     <div className="bg-base-200">
       <footer className="container mx-auto footer footer-horizontal footer-center text-base-content rounded p-10">
         <nav className="grid grid-flow-col gap-4">
-          <Link href="/legal/return-policy" className="link link-hover">
-            Returns
-          </Link>
           <Link href="/company/contact" className="link link-hover">
             Contact
           </Link>
           <Link href="/company/shipping" className="link link-hover">
             Shipping
+          </Link>
+          <Link href="/legal/return-policy" className="link link-hover">
+            Returns
           </Link>
         </nav>
         <nav>
