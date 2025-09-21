@@ -4,7 +4,7 @@ import { storeConfig } from 'config/store-config';
 export function Footer() {
   return (
     <div className="bg-base-200">
-      <footer className="container mx-auto footer footer-horizontal footer-center text-base-content rounded p-10">
+      <footer className="container mx-auto footer footer-horizontal footer-center text-base-content p-10">
         <nav className="grid grid-flow-col gap-4">
           <Link href="/company/contact" className="link link-hover">
             Contact

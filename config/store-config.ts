@@ -15,6 +15,11 @@ export const storeConfig = {
   },
 };
 
+export const globalBanner = {
+  enabled: true,
+  text: 'Free shipping on all orders',
+};
+
 export function getPageTitle(title?: string) {
   return title ? `${title} - ${storeConfig.title}` : storeConfig.title;
 }
