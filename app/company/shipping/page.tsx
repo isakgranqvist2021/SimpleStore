@@ -1,4 +1,10 @@
 import { shippingFees } from 'config';
+import { Metadata } from 'next';
+import { getPageTitle } from 'utils';
+
+export const metadata: Metadata = {
+  title: getPageTitle('Shipping'),
+};
 
 export default function ShippingPage() {
   return (

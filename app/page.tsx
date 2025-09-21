@@ -2,11 +2,6 @@ import { getProducts } from 'data';
 import Link from 'next/link';
 import { formatCurrency } from 'utils';
 
-export const metadata = {
-  title: 'One Product Store - Buy the best product in the world',
-  description: 'One product store selling the best product in the world.',
-};
-
 export default function HomePage() {
   const products = getProducts();
 

@@ -1,11 +1,12 @@
 import { auth0 } from 'lib/auth0';
+import { Metadata } from 'next';
 import React from 'react';
 import { stripe } from 'services/payment';
 import Stripe from 'stripe';
-import { formatCurrency, formatDate } from 'utils';
+import { formatCurrency, formatDate, getPageTitle } from 'utils';
 
-export const metadata = {
-  title: 'Account',
+export const metadata: Metadata = {
+  title: getPageTitle('My Orders'),
 };
 
 async function getTransactionsByEmail(email: string) {

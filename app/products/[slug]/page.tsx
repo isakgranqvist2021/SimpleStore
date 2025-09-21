@@ -1,7 +1,7 @@
 import { ImagePicker } from 'components/image-picker';
 import { getProductBySlug } from 'data';
 import React from 'react';
-import { formatCurrency } from 'utils';
+import { formatCurrency, getPageTitle } from 'utils';
 import { PickProductOptions } from 'components/pick-product-options';
 import { auth0 } from 'lib/auth0';
 import { ProductRating } from 'components/product-rating';
@@ -21,7 +21,7 @@ export async function generateMetadata(
   }
 
   return {
-    title: product.name,
+    title: getPageTitle(product.name),
     description: product.description,
     openGraph: {
       title: product.name,
@@ -56,7 +56,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
           </div>
 
           <div className="w-full flex flex-col gap-4 py-6 px-2 md:px-12 max-w-lg">
-            <h2 className="font-bold text-3xl">{product.name}</h2>
+            <h1 className="font-bold text-3xl">{product.name}</h1>
 
             <div className="flex">
               <span>{formatCurrency(product.price)}</span>

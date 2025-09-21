@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+import { getPageTitle } from 'utils';
+
+export const metadata: Metadata = {
+  title: getPageTitle('Privacy Policy'),
+};
+
 export default function PrivacyPolicyPage() {
   return (
     <div className="container mx-auto py-8 px-4">

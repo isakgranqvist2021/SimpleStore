@@ -1,12 +1,14 @@
+import { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import React from 'react';
 import { sendOrderSuccessfulEmail } from 'services/email';
 import { getCheckoutSession } from 'services/payment';
 import type { PageProps } from 'types/page';
+import { getPageTitle } from 'utils';
 
-export const metadata = {
-  title: 'Payment Accepted',
+export const metadata: Metadata = {
+  title: getPageTitle('Payment Accepted'),
 };
 
 export default async function Accepted(

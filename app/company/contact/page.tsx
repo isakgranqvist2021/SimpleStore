@@ -1,4 +1,10 @@
 import { storeConfig } from 'config';
+import { Metadata } from 'next';
+import { getPageTitle } from 'utils';
+
+export const metadata: Metadata = {
+  title: getPageTitle('Contact us'),
+};
 
 export default function ContactPage() {
   return (

@@ -1,3 +1,10 @@
+import { Metadata } from 'next';
+import { getPageTitle } from 'utils';
+
+export const metadata: Metadata = {
+  title: getPageTitle('About us'),
+};
+
 export default function AboutUsPage() {
   return (
     <div className="container mx-auto py-8 px-4">

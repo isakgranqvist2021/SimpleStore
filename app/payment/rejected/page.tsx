@@ -1,11 +1,12 @@
 import { CheckoutAgainButton } from 'components/checkout-again-button';
-import Link from 'next/link';
+import { Metadata } from 'next';
 import React from 'react';
 import { getCheckoutSession } from 'services/payment';
 import { PageProps } from 'types/page';
+import { getPageTitle } from 'utils';
 
-export const metadata = {
-  title: 'Payment Rejected',
+export const metadata: Metadata = {
+  title: getPageTitle('Payment Rejected'),
 };
 
 export default async function Rejected(
