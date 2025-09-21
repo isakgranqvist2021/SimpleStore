@@ -4,6 +4,10 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   return [
     {
+      url: process.env.APP_BASE_URL!,
+      lastModified: new Date(),
+    },
+    {
       url: `${process.env.APP_BASE_URL}/company/about-us`,
       lastModified: new Date(),
     },
