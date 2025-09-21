@@ -1,1 +1,1 @@
-Template
+# Store thing app

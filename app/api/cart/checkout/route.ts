@@ -15,7 +15,13 @@ function getStripeCheckoutParams(params: {
   return {
     mode: 'payment',
     submit_type: 'pay',
-    payment_method_types: ['card'],
+    payment_method_types: [
+      'card',
+      'revolut_pay',
+      'klarna',
+      'mobilepay',
+      'paypal',
+    ],
     customer_email: params.email,
     line_items: [
       {
