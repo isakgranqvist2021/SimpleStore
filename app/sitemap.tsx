@@ -24,7 +24,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
     },
     ...getProducts().map((product) => ({
-      url: `${process.env.APP_BASE_URL}/product/${product.slug}`,
+      url: `${process.env.APP_BASE_URL}/products/${product.slug}`,
       lastModified: new Date(),
     })),
   ];
