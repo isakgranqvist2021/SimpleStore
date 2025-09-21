@@ -3,7 +3,8 @@ import { Metadata } from 'next';
 import React from 'react';
 import { stripe } from 'services/payment';
 import Stripe from 'stripe';
-import { formatCurrency, formatDate, getPageTitle } from 'utils';
+import { formatCurrency, formatDate } from 'utils';
+import { getPageTitle } from 'config/store-config';
 
 export const metadata: Metadata = {
   title: getPageTitle('My Orders'),

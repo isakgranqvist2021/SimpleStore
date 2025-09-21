@@ -5,7 +5,7 @@ import React from 'react';
 import { sendOrderSuccessfulEmail } from 'services/email';
 import { getCheckoutSession } from 'services/payment';
 import type { PageProps } from 'types/page';
-import { getPageTitle } from 'utils';
+import { getPageTitle } from 'config/store-config';
 
 export const metadata: Metadata = {
   title: getPageTitle('Payment Accepted'),

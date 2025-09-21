@@ -1,4 +1,4 @@
-import { allowedCountries } from 'config';
+import { allowedCountries } from 'config/shipping';
 import { getProductById } from 'data';
 import { auth0 } from 'lib/auth0';
 import { createCheckoutSession } from 'services/payment';

@@ -1,13 +1,13 @@
 import { Footer } from 'components/footer';
 import { Nav } from 'components/nav';
-import { storeConfig } from 'config';
+import { storeConfig } from 'config/store-config';
 import { Metadata } from 'next';
 import React from 'react';
 import { Toaster } from 'sonner';
 import 'styles/globals.css';
-import { getPageTitle } from 'utils';
+import { getPageTitle } from 'config/store-config';
 
-export const metadat: Metadata = {
+export const metadata: Metadata = {
   title: getPageTitle(),
   description: storeConfig.description,
 };

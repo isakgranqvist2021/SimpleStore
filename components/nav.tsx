@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import NavDropdown from './nav-dropdown';
-import { storeConfig } from 'config';
+import { storeConfig } from 'config/store-config';
 
 export function Nav() {
   return (

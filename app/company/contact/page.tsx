@@ -1,6 +1,6 @@
-import { storeConfig } from 'config';
+import { storeConfig } from 'config/store-config';
 import { Metadata } from 'next';
-import { getPageTitle } from 'utils';
+import { getPageTitle } from 'config/store-config';
 
 export const metadata: Metadata = {
   title: getPageTitle('Contact us'),

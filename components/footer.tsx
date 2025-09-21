@@ -1,26 +1,13 @@
 import Link from 'next/link';
-import { storeConfig } from 'config';
+import { storeConfig } from 'config/store-config';
 
 export function Footer() {
   return (
-    <div className="bg-base-300">
-      <footer className="container mx-auto footer sm:footer-horizontal text-base-content px-4 p-10">
-        <nav>
-          <h6 className="footer-title">Legal</h6>
-          <Link href="/legal/privacy-policy" className="link link-hover">
-            Privacy Policy
-          </Link>
-          <Link href="/legal/cookie-policy" className="link link-hover">
-            Cookie Policy
-          </Link>
+    <div className="bg-base-200">
+      <footer className="container mx-auto footer footer-horizontal footer-center text-base-content rounded p-10">
+        <nav className="grid grid-flow-col gap-4">
           <Link href="/legal/return-policy" className="link link-hover">
-            Return Policy
-          </Link>
-        </nav>
-        <nav>
-          <h6 className="footer-title">Company</h6>
-          <Link href="/company/about-us" className="link link-hover">
-            About us
+            Returns
           </Link>
           <Link href="/company/contact" className="link link-hover">
             Contact
@@ -30,11 +17,16 @@ export function Footer() {
           </Link>
         </nav>
         <nav>
-          <h6 className="footer-title">Social</h6>
           <div className="grid grid-flow-col gap-4">
             {Object.entries(storeConfig.socialMedia).map(renderSocialIcon)}
           </div>
         </nav>
+        <aside>
+          <p>
+            Copyright © {new Date().getFullYear()} - All right reserved by{' '}
+            {storeConfig.name}
+          </p>
+        </aside>
       </footer>
     </div>
   );

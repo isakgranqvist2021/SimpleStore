@@ -15,6 +15,7 @@ export function ImagePicker(props: ImagePickerProps) {
         <img
           className="rounded-lg max-h-[600px] object-cover"
           src={props.images[activeIndex]}
+          alt="Product image"
         />
       </figure>
       <div className="flex gap-2 mt-2 flex-wrap">
