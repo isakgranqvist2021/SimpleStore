@@ -6,6 +6,7 @@ import React from 'react';
 import { Toaster } from 'sonner';
 import 'styles/globals.css';
 import { getPageTitle } from 'config/store-config';
+import { Banner } from 'components/banner';
 
 export const metadata: Metadata = {
   title: getPageTitle(),
@@ -16,11 +17,7 @@ export default function RootLayout(props: React.PropsWithChildren) {
   return (
     <html data-theme="lofi" lang="en">
       <body className="min-h-screen flex flex-col">
-        {globalBanner.enabled && (
-          <div className="bg-accent text-accent-content text-center py-2 text-sm">
-            <p>{globalBanner.text}</p>
-          </div>
-        )}
+        {globalBanner.enabled && <Banner>{globalBanner.text}</Banner>}
 
         <Nav />
 
