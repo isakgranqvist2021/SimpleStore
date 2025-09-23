@@ -17,7 +17,7 @@ export const storeConfig = {
 
 export const globalBanner = {
   enabled: true,
-  text: 'Free shipping on all orders',
+  text: 'Free shipping and returns on all orders',
 };
 
 export function getPageTitle(title?: string) {

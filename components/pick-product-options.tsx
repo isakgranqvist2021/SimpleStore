@@ -40,7 +40,7 @@ export function PickProductOptions(props: PickProductOptionsProps) {
               onChange={handleChange}
             >
               {option.values.map((value) => (
-                <option key={value} value={value}>
+                <option disabled={option.disabled} key={value} value={value}>
                   {value}
                 </option>
               ))}

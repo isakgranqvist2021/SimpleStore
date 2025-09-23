@@ -61,7 +61,13 @@ The crisp white fabric serves as a clean canvas for the bold blue granqvist.dev 
       'https://storage.googleapis.com/public_cdn_bucket/product_images/granqvist-dev-shirt/retro-trucker-hat-white-right-front-68c32092c49fc.png',
     ],
 
-    options: [],
+    options: [
+      {
+        id: 'size',
+        name: 'Size',
+        values: ['One Size'],
+      },
+    ],
     reviews: [],
   },
 ];

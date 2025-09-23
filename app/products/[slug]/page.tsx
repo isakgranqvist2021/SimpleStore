@@ -5,7 +5,6 @@ import { formatCurrency } from 'utils';
 import { PickProductOptions } from 'components/pick-product-options';
 import { auth0 } from 'lib/auth0';
 import { ProductRating } from 'components/product-rating';
-import Link from 'next/link';
 import { PageProps } from 'types/page';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
@@ -79,6 +78,54 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
               options={product.options}
               productId={product.id}
             />
+
+            <ul className="list bg-base-100 border rounded">
+              <li className="list-row items-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="size-4"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
+                  />
+                </svg>
+
+                <div>
+                  <div className="text-xs uppercase font-semibold">
+                    Free delivery and free returns on all orders!
+                  </div>
+                </div>
+              </li>
+              <li className="list-row items-center">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="size-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="m9 9 6-6m0 0 6 6m-6-6v12a6 6 0 0 1-12 0v-3"
+                    />
+                  </svg>
+                </div>
+                <div>
+                  <div className="text-xs uppercase font-semibold">
+                    30 days no questions asked return policy
+                  </div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </section>

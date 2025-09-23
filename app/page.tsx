@@ -15,7 +15,11 @@ export default function HomePage() {
             key={product.id}
           >
             <figure>
-              <img src={product.images[0]} alt={product.name} />
+              <img
+                className="md:height-auto max-h-48"
+                src={product.images[0]}
+                alt={product.name}
+              />
             </figure>
             <div className="card-body">
               <div className="flex">

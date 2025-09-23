@@ -5,6 +5,7 @@ import { stripe } from 'services/payment';
 import Stripe from 'stripe';
 import { formatCurrency, formatDate } from 'utils';
 import { getPageTitle } from 'config/store-config';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: getPageTitle('My Orders'),
@@ -12,10 +13,9 @@ export const metadata: Metadata = {
 
 async function getTransactionsByEmail(email: string) {
   try {
-    // Step 1: Find customers by email
     const customers = await stripe.customers.list({
       email,
-      limit: 100, // in case multiple customers exist with the same email
+      limit: 100,
     });
 
     if (customers.data.length === 0) {
@@ -25,7 +25,6 @@ async function getTransactionsByEmail(email: string) {
 
     let allTransactions: Stripe.Charge[] = [];
 
-    // Step 2: For each customer, list charges (or payment intents)
     for (const customer of customers.data) {
       const charges = await stripe.charges.list({
         customer: customer.id,
@@ -46,7 +45,17 @@ async function OrdersTable() {
   const session = await auth0.getSession();
 
   if (!session?.user?.email) {
-    return <p>Please log in to see your orders.</p>;
+    return (
+      <div>
+        <p>
+          Please{' '}
+          <Link className="link" href="/auth/login">
+            log in
+          </Link>{' '}
+          to see your orders.
+        </p>
+      </div>
+    );
   }
 
   const orders = await getTransactionsByEmail(session.user.email);
