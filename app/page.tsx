@@ -1,9 +1,10 @@
-import { getProducts } from 'data';
+import { ProductRating } from 'components/product-rating';
+import { productRepository } from 'database/product/product.repository';
 import Link from 'next/link';
 import { formatCurrency } from 'utils';
 
-export default function HomePage() {
-  const products = getProducts();
+export default async function HomePage() {
+  const products = await productRepository.findAll();
 
   return (
     <section className="container mx-auto px-2 py-8">
@@ -12,7 +13,7 @@ export default function HomePage() {
           <Link
             href={`/products/${product.slug}`}
             className="card bg-base-100 shadow-xl"
-            key={product.id}
+            key={product._id.toString()}
           >
             <figure>
               <img
@@ -24,14 +25,19 @@ export default function HomePage() {
             <div className="card-body">
               <div className="flex">
                 <span>{formatCurrency(product.price)}</span>
+
                 {product.compareAtPrice && (
                   <span className="line-through text-muted-foreground ml-2">
                     {formatCurrency(product.compareAtPrice)}
                   </span>
                 )}
               </div>
+
               <h2 className="card-title">{product.name}</h2>
+
               <p>{product.shortDescription}</p>
+
+              <ProductRating starClassName="size-4" reviews={product.reviews} />
             </div>
           </Link>
         ))}

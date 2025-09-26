@@ -1,12 +1,23 @@
-import type { Document } from 'mongodb';
+import type { Document, ObjectId } from 'mongodb';
 import clientPromise from 'services/mongodb';
 
-export type WithStringId<T> = Omit<T, '_id'> & { _id: string };
+export class Repository<T extends Document> {
+  private collectionName: string;
 
-export async function getCollection<T extends Document>(
-  collectionName: string,
-) {
-  const client = await clientPromise;
+  constructor(collectionName: string) {
+    this.collectionName = collectionName;
+  }
 
-  return client.db().collection<T>(collectionName);
+  async getCollection() {
+    const client = await clientPromise;
+
+    return client.db().collection<T>(this.collectionName);
+  }
+}
+
+export interface BaseDocument {
+  _id: ObjectId;
+
+  createdAt: number;
+  updatedAt: number;
 }

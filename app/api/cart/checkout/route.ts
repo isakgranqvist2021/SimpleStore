@@ -1,13 +1,16 @@
 import { allowedCountries } from 'config/shipping';
-import { getProductById } from 'data';
+import {
+  ProductDocument,
+  productRepository,
+} from 'database/product/product.repository';
 import { auth0 } from 'lib/auth0';
+import { ObjectId } from 'mongodb';
 import { createCheckoutSession } from 'services/payment';
 import Stripe from 'stripe';
-import { Product } from 'types/product';
 import z from 'zod';
 
 function getStripeCheckoutParams(params: {
-  product: Product;
+  product: ProductDocument;
   options: Record<string, string>;
   email?: string;
   redirectUrl?: string;
@@ -66,7 +69,9 @@ const checkoutSchema = z.object({
 export async function POST(req: Request) {
   try {
     const parsedCheckoutParams = checkoutSchema.parse(await req.json());
-    const product = getProductById(parsedCheckoutParams.productId);
+    const product = await productRepository.findOne({
+      _id: new ObjectId(parsedCheckoutParams.productId),
+    });
 
     if (!product) {
       return new Response(

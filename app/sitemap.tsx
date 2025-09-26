@@ -1,7 +1,9 @@
-import { getProducts } from 'data';
+import { productRepository } from 'database/product/product.repository';
 import { MetadataRoute } from 'next';
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const products = await productRepository.findAll();
+
   return [
     {
       url: process.env.APP_BASE_URL!,
@@ -23,7 +25,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${process.env.APP_BASE_URL}/legal/return-policy`,
       lastModified: new Date(),
     },
-    ...getProducts().map((product) => ({
+    ...products.map((product) => ({
       url: `${process.env.APP_BASE_URL}/products/${product.slug}`,
       lastModified: new Date(),
     })),

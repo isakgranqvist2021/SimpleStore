@@ -1,7 +1,9 @@
-import { ProductReview } from 'types/product';
+import { ProductReview } from 'database/product/product.model';
 
 interface ProductRatingProps {
   reviews: ProductReview[];
+  starClassName?: string;
+  className?: string;
 }
 
 function Star(props: React.SVGProps<SVGSVGElement>) {
@@ -21,7 +23,11 @@ function Star(props: React.SVGProps<SVGSVGElement>) {
   );
 }
 
-export function ProductRating({ reviews }: ProductRatingProps) {
+export function ProductRating({
+  className,
+  starClassName = 'size-6',
+  reviews,
+}: ProductRatingProps) {
   const averageRating =
     (reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length ||
       0) + 0.6;
@@ -29,21 +35,20 @@ export function ProductRating({ reviews }: ProductRatingProps) {
   const numberOfFullStars = Math.floor(averageRating);
 
   return (
-    <div className="flex gap-1 items-center">
+    <div className={`flex items-center ${className}`}>
       {[...Array(5)].map((_, index) => (
         <span
           key={index}
-          className={
-            index < numberOfFullStars
-              ? 'size-6 text-yellow-400'
-              : 'size-6 text-gray-200'
-          }
+          className={[
+            starClassName,
+            index < numberOfFullStars ? 'text-yellow-400' : 'text-gray-200',
+          ].join(' ')}
         >
           <Star />
         </span>
       ))}
 
-      <span>({reviews.length})</span>
+      <span className="ml-1">({reviews.length})</span>
     </div>
   );
 }

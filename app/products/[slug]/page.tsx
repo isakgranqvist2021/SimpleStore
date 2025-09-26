@@ -1,5 +1,4 @@
 import { ImagePicker } from 'components/image-picker';
-import { getProductBySlug } from 'data';
 import React from 'react';
 import { formatCurrency } from 'utils';
 import { PickProductOptions } from 'components/pick-product-options';
@@ -9,12 +8,13 @@ import { PageProps } from 'types/page';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getPageTitle } from 'config/store-config';
+import { productRepository } from 'database/product/product.repository';
 
 export async function generateMetadata(
   props: PageProps<{ slug: string }>,
 ): Promise<Metadata> {
   const params = await props.params;
-  const product = getProductBySlug(params.slug);
+  const product = await productRepository.findOne({ slug: params.slug });
 
   if (!product) {
     return {};
@@ -42,7 +42,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
   const params = await props.params;
   const session = await auth0.getSession();
 
-  const product = getProductBySlug(params.slug);
+  const product = await productRepository.findOne({ slug: params.slug });
   if (!product) {
     return redirect('/');
   }
@@ -67,16 +67,14 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
               )}
             </div>
 
-            <div className="flex gap-1">
-              <ProductRating reviews={product.reviews} />
-            </div>
+            <ProductRating className="gap-1" reviews={product.reviews} />
 
             <p className="whitespace-pre-wrap text-sm">{product.description}</p>
 
             <PickProductOptions
               email={session?.user?.email}
               options={product.options}
-              productId={product.id}
+              productId={product._id.toString()}
             />
 
             <ul className="list bg-base-100 border rounded">
