@@ -1,4 +1,4 @@
-import { ProductReview } from 'database/product/product.model';
+import { ProductReview } from 'database/review/review.model';
 
 interface ProductRatingProps {
   reviews: ProductReview[];
