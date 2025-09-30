@@ -21,22 +21,16 @@ export interface ProductDocument extends BaseDocument {
 }
 
 class ProductRepository extends Repository<ProductDocument> {
-  static _collectionName = 'products';
-
   constructor() {
-    super(ProductRepository._collectionName);
+    super('products');
   }
 
   async findOne(filter: Filter<ProductDocument>) {
-    const collection = await this.getCollection();
-
-    return collection.findOne(filter);
+    return this.withCollection((c) => c.findOne(filter));
   }
 
   async findAll() {
-    const collection = await this.getCollection();
-
-    return collection.find().toArray();
+    return this.withCollection((c) => c.find().toArray());
   }
 }
 
