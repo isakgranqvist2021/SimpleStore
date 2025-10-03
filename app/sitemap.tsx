@@ -1,8 +1,8 @@
-import { productRepository } from 'database/product/product.repository';
+import models from 'database/models';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const products = await productRepository.findAll();
+  const products = await models.product.find();
 
   return [
     {

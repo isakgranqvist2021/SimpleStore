@@ -1,3 +1,9 @@
+export interface ProductReview {
+  id: string;
+
+  rating: number;
+}
+
 export interface ProductOption {
   id: string;
 

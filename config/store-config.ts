@@ -13,6 +13,8 @@ export const storeConfig = {
     instagram: 'https://www.instagram.com/yourstore',
     pinterest: 'https://www.pinterest.com/yourstore',
   },
+
+  defaultCurrency: 'EUR',
 };
 
 export const globalBanner = {

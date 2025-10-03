@@ -8,13 +8,13 @@ import { PageProps } from 'types/page';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getPageTitle } from 'config/store-config';
-import { productRepository } from 'database/product/product.repository';
+import models from 'database/models';
 
 export async function generateMetadata(
   props: PageProps<{ slug: string }>,
 ): Promise<Metadata> {
   const params = await props.params;
-  const product = await productRepository.findOne({ slug: params.slug });
+  const product = await models.product.findOne({ slug: params.slug }).lean();
 
   if (!product) {
     return {};
@@ -42,7 +42,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
   const params = await props.params;
   const session = await auth0.getSession();
 
-  const product = await productRepository.findOne({ slug: params.slug });
+  const product = await models.product.findOne({ slug: params.slug }).lean();
   if (!product) {
     return redirect('/');
   }
@@ -74,7 +74,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
             <PickProductOptions
               email={session?.user?.email}
               options={product.options}
-              productId={product._id.toString()}
+              productId={product._id.toHexString()}
             />
 
             <ul className="list bg-base-100 border rounded">

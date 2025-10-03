@@ -1,10 +1,10 @@
 import { ProductRating } from 'components/product-rating';
-import { productRepository } from 'database/product/product.repository';
+import models from 'database/models';
 import Link from 'next/link';
 import { formatCurrency } from 'utils';
 
 export default async function HomePage() {
-  const products = await productRepository.findAll();
+  const products = await models.product.find();
 
   return (
     <section className="container mx-auto px-2 py-8">

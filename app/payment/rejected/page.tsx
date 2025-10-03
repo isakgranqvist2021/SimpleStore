@@ -1,5 +1,6 @@
 import { CheckoutAgainButton } from 'components/checkout-again-button';
 import { getPageTitle } from 'config/store-config';
+import models from 'database/models';
 import { Metadata } from 'next';
 import React from 'react';
 import { getCheckoutSession } from 'services/payment';
@@ -10,16 +11,11 @@ export const metadata: Metadata = {
 };
 
 export default async function Rejected(
-  props: PageProps<undefined, { checkoutSessionId: string }>,
+  props: PageProps<undefined, { orderId?: string }>,
 ) {
   const searchParams = await props.searchParams;
 
-  const checkoutSessionId = searchParams.checkoutSessionId;
-  if (typeof checkoutSessionId !== 'string') {
-    throw new Error('Invalid checkout session id');
-  }
-
-  const checkoutSession = await getCheckoutSession(checkoutSessionId);
+  const order = await rejectOrder(searchParams.orderId);
 
   return (
     <section className="container mx-auto px-2 py-16">
@@ -43,10 +39,28 @@ export default async function Rejected(
           if the problem persists.
         </p>
 
-        {checkoutSession.id && (
-          <CheckoutAgainButton sessionId={checkoutSession.id} />
-        )}
+        <CheckoutAgainButton sessionId={order.checkoutSessionId} />
       </div>
     </section>
   );
+}
+
+async function rejectOrder(orderId?: string) {
+  if (typeof orderId !== 'string') {
+    throw new Error('Invalid order id');
+  }
+
+  const order = await models.order.findById(orderId);
+  if (!order) {
+    throw new Error('Order not found');
+  }
+
+  const checkoutSession = await getCheckoutSession(order.checkoutSessionId);
+
+  if (checkoutSession.customer_details?.email && !order.email) {
+    order.email = checkoutSession.customer_details.email;
+    await order.save();
+  }
+
+  return order;
 }

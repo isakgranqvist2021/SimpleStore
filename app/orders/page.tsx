@@ -1,45 +1,15 @@
 import { auth0 } from 'lib/auth0';
 import { Metadata } from 'next';
 import React from 'react';
-import { stripe } from 'services/payment';
-import Stripe from 'stripe';
 import { formatCurrency, formatDate } from 'utils';
 import { getPageTitle } from 'config/store-config';
 import Link from 'next/link';
+import models from 'database/models';
+import product from 'database/product.schema';
 
 export const metadata: Metadata = {
   title: getPageTitle('My Orders'),
 };
-
-async function getTransactionsByEmail(email: string) {
-  try {
-    const customers = await stripe.customers.list({
-      email,
-      limit: 100,
-    });
-
-    if (customers.data.length === 0) {
-      console.log('No customers found with that email.');
-      return [];
-    }
-
-    let allTransactions: Stripe.Charge[] = [];
-
-    for (const customer of customers.data) {
-      const charges = await stripe.charges.list({
-        customer: customer.id,
-        limit: 100, // adjust if you need pagination
-      });
-
-      allTransactions = allTransactions.concat(charges.data);
-    }
-
-    return allTransactions;
-  } catch (error) {
-    console.error('Error fetching transactions:', error);
-    throw error;
-  }
-}
 
 async function OrdersTable() {
   const session = await auth0.getSession();
@@ -58,7 +28,14 @@ async function OrdersTable() {
     );
   }
 
-  const orders = await getTransactionsByEmail(session.user.email);
+  const orders = await models.order
+    .find({
+      email: session.user.email,
+    })
+    .populate<typeof models.product & { product: typeof product.model }>(
+      'product',
+    )
+    .exec();
 
   if (!orders.length) {
     return (
@@ -76,6 +53,7 @@ async function OrdersTable() {
       <table className="table">
         <thead>
           <tr>
+            <th>Product</th>
             <th>Created</th>
             <th>Amount</th>
             <th>Status</th>
@@ -83,9 +61,10 @@ async function OrdersTable() {
         </thead>
         <tbody>
           {orders.map((order) => (
-            <tr key={order.id}>
-              <td>{formatDate(order.created * 1000)}</td>
-              <td>{formatCurrency(order.amount)}</td>
+            <tr key={order._id.toString()}>
+              <th>{order.product.name}</th>
+              <td>{formatDate(order.createdAt)}</td>
+              <td>{formatCurrency(order.amountTotal ?? 0)}</td>
               <td className="capitalize">{order.status}</td>
             </tr>
           ))}

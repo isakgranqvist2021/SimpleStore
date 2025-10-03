@@ -1,34 +1,22 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { redirect } from 'next/navigation';
 import React from 'react';
-import { sendOrderSuccessfulEmail } from 'services/email';
-import { getCheckoutSession } from 'services/payment';
 import type { PageProps } from 'types/page';
 import { getPageTitle } from 'config/store-config';
+import { getCheckoutSession } from 'services/payment';
+import { sendOrderSuccessfulEmail } from 'services/email';
+import models from 'database/models';
 
 export const metadata: Metadata = {
   title: getPageTitle('Payment Accepted'),
 };
 
 export default async function Accepted(
-  props: PageProps<undefined, { checkoutSessionId: string }>,
+  props: PageProps<undefined, { orderId?: string }>,
 ) {
   const searchParams = await props.searchParams;
 
-  const checkoutSessionId = searchParams.checkoutSessionId;
-  if (typeof checkoutSessionId !== 'string') {
-    throw new Error('Invalid checkout session id');
-  }
-
-  const checkoutSession = await getCheckoutSession(checkoutSessionId);
-  if (checkoutSession.payment_status !== 'paid') {
-    return redirect('/payment/rejected');
-  }
-
-  if (checkoutSession.customer_details?.email) {
-    await sendOrderSuccessfulEmail(checkoutSession.customer_details?.email);
-  }
+  await acceptOrder(searchParams.orderId);
 
   return (
     <section className="container mx-auto px-2 py-16">
@@ -68,4 +56,36 @@ export default async function Accepted(
       </div>
     </section>
   );
+}
+
+async function acceptOrder(orderId?: string) {
+  if (typeof orderId !== 'string') {
+    throw new Error('Invalid order id');
+  }
+
+  const order = await models.order.findById(orderId);
+  if (!order) {
+    throw new Error('Order not found');
+  }
+
+  const checkoutSession = await getCheckoutSession(order.checkoutSessionId);
+  if (checkoutSession.payment_status !== 'paid') {
+    throw new Error('Order not paid');
+  }
+
+  const email = order.email || checkoutSession.customer_details?.email;
+  if (!email) {
+    throw new Error('No email associated with order');
+  }
+
+  if (order.status === 'unpaid') {
+    await sendOrderSuccessfulEmail(email);
+  }
+
+  order.email = email;
+  order.status = 'paid';
+
+  await order.save();
+
+  return order;
 }

@@ -1,65 +1,10 @@
 import { allowedCountries } from 'config/shipping';
-import {
-  ProductDocument,
-  productRepository,
-} from 'database/product/product.repository';
+import { storeConfig } from 'config/store-config';
+import models from 'database/models';
 import { auth0 } from 'lib/auth0';
 import { ObjectId } from 'mongodb';
 import { createCheckoutSession } from 'services/payment';
-import Stripe from 'stripe';
 import z from 'zod';
-
-function getStripeCheckoutParams(params: {
-  product: ProductDocument;
-  options: Record<string, string>;
-  email?: string;
-  redirectUrl?: string;
-}): Stripe.Checkout.SessionCreateParams {
-  return {
-    mode: 'payment',
-    submit_type: 'pay',
-    payment_method_types: [
-      'card',
-      'revolut_pay',
-      'klarna',
-      'mobilepay',
-      'paypal',
-    ],
-    customer_email: params.email,
-    line_items: [
-      {
-        price_data: {
-          currency: 'EUR',
-          unit_amount: params.product.price,
-          product_data: {
-            name: params.product.name,
-            images: params.product.images,
-            metadata: params.options,
-          },
-        },
-        quantity: 1,
-      },
-    ],
-    success_url: `${params.redirectUrl}/payment/accepted?checkoutSessionId={CHECKOUT_SESSION_ID}`,
-    cancel_url: `${params.redirectUrl}/payment/rejected?checkoutSessionId={CHECKOUT_SESSION_ID}`,
-
-    shipping_options: [
-      {
-        shipping_rate_data: {
-          type: 'fixed_amount',
-          display_name: 'Standard shipping',
-          fixed_amount: {
-            amount: 0,
-            currency: 'EUR',
-          },
-        },
-      },
-    ],
-    shipping_address_collection: {
-      allowed_countries: allowedCountries,
-    },
-  };
-}
 
 const checkoutSchema = z.object({
   options: z.record(z.string(), z.string()),
@@ -69,9 +14,9 @@ const checkoutSchema = z.object({
 export async function POST(req: Request) {
   try {
     const parsedCheckoutParams = checkoutSchema.parse(await req.json());
-    const product = await productRepository.findOne({
-      _id: new ObjectId(parsedCheckoutParams.productId),
-    });
+    const product = await models.product
+      .findById(parsedCheckoutParams.productId)
+      .lean();
 
     if (!product) {
       return new Response(
@@ -87,14 +32,63 @@ export async function POST(req: Request) {
 
     const redirectUrl = req.headers.get('origin') || 'http://localhost:3000';
 
-    const checkoutSessionParams = getStripeCheckoutParams({
-      email: session?.user?.email,
-      redirectUrl,
-      options: parsedCheckoutParams.options,
-      product,
+    const orderId = new ObjectId();
+
+    const checkoutSession = await createCheckoutSession({
+      mode: 'payment',
+      submit_type: 'pay',
+      payment_method_types: [
+        'card',
+        'revolut_pay',
+        'klarna',
+        'mobilepay',
+        'paypal',
+      ],
+      customer_email: session?.user.email,
+      line_items: [
+        {
+          price_data: {
+            currency: storeConfig.defaultCurrency,
+            unit_amount: product.price,
+            product_data: {
+              name: product.name,
+              images: product.images,
+              metadata: parsedCheckoutParams.options,
+            },
+          },
+          quantity: 1,
+        },
+      ],
+      success_url: `${redirectUrl}/payment/accepted?orderId=${orderId}`,
+      cancel_url: `${redirectUrl}/payment/rejected?orderId=${orderId}`,
+
+      shipping_options: [
+        {
+          shipping_rate_data: {
+            type: 'fixed_amount',
+            display_name: 'Standard shipping',
+            fixed_amount: {
+              amount: 0,
+              currency: storeConfig.defaultCurrency,
+            },
+          },
+        },
+      ],
+      shipping_address_collection: {
+        allowed_countries: allowedCountries,
+      },
     });
 
-    const checkoutSession = await createCheckoutSession(checkoutSessionParams);
+    const order = await models.order.insertOne({
+      _id: orderId,
+      product: product._id,
+      checkoutSessionId: checkoutSession.id,
+      email: session?.user.email,
+      amountTotal: checkoutSession.amount_total ?? 0,
+    });
+    if (!order) {
+      throw new Error('Failed to create order');
+    }
 
     return Response.json({ sessionId: checkoutSession.id });
   } catch (err) {

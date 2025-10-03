@@ -7,13 +7,16 @@ import { Toaster } from 'sonner';
 import 'styles/globals.css';
 import { getPageTitle } from 'config/store-config';
 import { Banner } from 'components/banner';
+import dbConnect from 'database/mongodb';
 
 export const metadata: Metadata = {
   title: getPageTitle(),
   description: storeConfig.description,
 };
 
-export default function RootLayout(props: React.PropsWithChildren) {
+export default async function RootLayout(props: React.PropsWithChildren) {
+  await dbConnect();
+
   return (
     <html data-theme="lofi" lang="en">
       <body className="min-h-screen flex flex-col">
