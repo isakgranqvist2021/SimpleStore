@@ -1,7 +1,7 @@
-import { ProductReview } from 'database/types';
+import { ReviewType } from 'models/review.schema';
 
 interface ProductRatingProps {
-  reviews: ProductReview[];
+  reviews: ReviewType[];
   starClassName?: string;
   className?: string;
 }

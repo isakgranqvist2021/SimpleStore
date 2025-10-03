@@ -7,7 +7,7 @@ import { Toaster } from 'sonner';
 import 'styles/globals.css';
 import { getPageTitle } from 'config/store-config';
 import { Banner } from 'components/banner';
-import dbConnect from 'database/mongodb';
+import dbConnect from 'services/mongodb';
 
 export const metadata: Metadata = {
   title: getPageTitle(),

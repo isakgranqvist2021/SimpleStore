@@ -1,6 +1,6 @@
 import { allowedCountries } from 'config/shipping';
 import { storeConfig } from 'config/store-config';
-import models from 'database/models';
+import models from 'models/models';
 import { auth0 } from 'lib/auth0';
 import { ObjectId } from 'mongodb';
 import { createCheckoutSession } from 'services/payment';

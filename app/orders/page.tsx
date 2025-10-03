@@ -4,8 +4,8 @@ import React from 'react';
 import { formatCurrency, formatDate } from 'utils';
 import { getPageTitle } from 'config/store-config';
 import Link from 'next/link';
-import models from 'database/models';
-import product from 'database/product.schema';
+import models from 'models/models';
+import product from 'models/product.schema';
 
 export const metadata: Metadata = {
   title: getPageTitle('My Orders'),

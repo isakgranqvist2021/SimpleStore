@@ -1,6 +1,6 @@
 import { CheckoutAgainButton } from 'components/checkout-again-button';
 import { getPageTitle } from 'config/store-config';
-import models from 'database/models';
+import models from 'models/models';
 import { Metadata } from 'next';
 import React from 'react';
 import { getCheckoutSession } from 'services/payment';

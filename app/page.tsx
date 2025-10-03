@@ -1,10 +1,11 @@
 import { ProductRating } from 'components/product-rating';
-import models from 'database/models';
+import models from 'models/models';
 import Link from 'next/link';
+import React from 'react';
 import { formatCurrency } from 'utils';
 
 export default async function HomePage() {
-  const products = await models.product.find();
+  const products = await models.product.find().lean();
 
   return (
     <section className="container mx-auto px-2 py-8">
@@ -37,7 +38,7 @@ export default async function HomePage() {
 
               <p>{product.shortDescription}</p>
 
-              <ProductRating starClassName="size-4" reviews={product.reviews} />
+              <ProductRating starClassName="size-4" reviews={[]} />
             </div>
           </Link>
         ))}

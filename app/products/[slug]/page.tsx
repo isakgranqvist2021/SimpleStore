@@ -8,7 +8,7 @@ import { PageProps } from 'types/page';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getPageTitle } from 'config/store-config';
-import models from 'database/models';
+import models from 'models/models';
 
 export async function generateMetadata(
   props: PageProps<{ slug: string }>,
@@ -42,7 +42,9 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
   const params = await props.params;
   const session = await auth0.getSession();
 
-  const product = await models.product.findOne({ slug: params.slug }).lean();
+  const product = await models.product
+    .findOne({ slug: params.slug }, { 'options._id': 0 })
+    .lean();
   if (!product) {
     return redirect('/');
   }
@@ -67,7 +69,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
               )}
             </div>
 
-            <ProductRating className="gap-1" reviews={product.reviews} />
+            <ProductRating className="gap-1" reviews={[]} />
 
             <p className="whitespace-pre-wrap text-sm">{product.description}</p>
 

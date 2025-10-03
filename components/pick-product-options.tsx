@@ -1,11 +1,11 @@
 'use client';
 
-import { ProductOption } from 'database/types';
+import { OptionType } from 'models/product.schema';
 import { useContinueToPayment } from 'hooks/use-continue-to-payment';
 import React from 'react';
 
 interface PickProductOptionsProps {
-  options: ProductOption[];
+  options: OptionType[];
   email?: string;
   productId: string;
 }
@@ -40,7 +40,7 @@ export function PickProductOptions(props: PickProductOptionsProps) {
               onChange={handleChange}
             >
               {option.values.map((value) => (
-                <option disabled={option.disabled} key={value} value={value}>
+                <option key={value} value={value}>
                   {value}
                 </option>
               ))}

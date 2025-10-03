@@ -5,7 +5,7 @@ import type { PageProps } from 'types/page';
 import { getPageTitle } from 'config/store-config';
 import { getCheckoutSession } from 'services/payment';
 import { sendOrderSuccessfulEmail } from 'services/email';
-import models from 'database/models';
+import models from 'models/models';
 
 export const metadata: Metadata = {
   title: getPageTitle('Payment Accepted'),

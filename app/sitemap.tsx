@@ -1,4 +1,4 @@
-import models from 'database/models';
+import models from 'models/models';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
