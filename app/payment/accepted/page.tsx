@@ -2,10 +2,10 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import React from 'react';
 import type { PageProps } from 'types/page';
-import { getPageTitle } from 'config/store-config';
-import { getCheckoutSession } from 'services/payment';
-import { sendOrderSuccessfulEmail } from 'services/email';
+import { getPageTitle, storeConfig } from 'config/store-config';
 import models from 'models/models';
+import { sendEmail } from 'lib/resend';
+import { stripe } from 'lib/stripe';
 
 export const metadata: Metadata = {
   title: getPageTitle('Payment Accepted'),
@@ -68,7 +68,9 @@ async function acceptOrder(orderId?: string) {
     throw new Error('Order not found');
   }
 
-  const checkoutSession = await getCheckoutSession(order.checkoutSessionId);
+  const checkoutSession = await stripe.checkout.sessions.retrieve(
+    order.checkoutSessionId,
+  );
   if (checkoutSession.payment_status !== 'paid') {
     throw new Error('Order not paid');
   }
@@ -88,4 +90,30 @@ async function acceptOrder(orderId?: string) {
   await order.save();
 
   return order;
+}
+
+async function sendOrderSuccessfulEmail(email: string) {
+  return await sendEmail(email, {
+    subject: 'Your order was successful – thank you for shopping with us!',
+    html: `
+      <p>Hi there,</p>
+
+      <p>Good news — your order has been successfully placed! 🎉</p>
+
+      <p>
+        Thank you for your purchase. We’re preparing your items and will keep you
+        updated every step of the way.
+      </p>
+
+      <p>
+        <strong>Order updates</strong> — You’ll receive notifications by email as
+        soon as your order is processed and when it’s on its way to you.
+      </p>
+
+      <p>If you have any questions, simply send your question to ${storeConfig.contactEmail} and we’ll be happy to help.</p>
+
+      <p>Best regards,<br/>
+      ${storeConfig.name}</p>
+    `,
+  });
 }

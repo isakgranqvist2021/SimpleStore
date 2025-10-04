@@ -1,9 +1,9 @@
 import { CheckoutAgainButton } from 'components/checkout-again-button';
 import { getPageTitle } from 'config/store-config';
+import { stripe } from 'lib/stripe';
 import models from 'models/models';
 import { Metadata } from 'next';
 import React from 'react';
-import { getCheckoutSession } from 'services/payment';
 import { PageProps } from 'types/page';
 
 export const metadata: Metadata = {
@@ -55,7 +55,9 @@ async function rejectOrder(orderId?: string) {
     throw new Error('Order not found');
   }
 
-  const checkoutSession = await getCheckoutSession(order.checkoutSessionId);
+  const checkoutSession = await stripe.checkout.sessions.retrieve(
+    order.checkoutSessionId,
+  );
 
   if (checkoutSession.customer_details?.email && !order.email) {
     order.email = checkoutSession.customer_details.email;

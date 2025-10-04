@@ -3,8 +3,8 @@ import { storeConfig } from 'config/store-config';
 import models from 'models/models';
 import { auth0 } from 'lib/auth0';
 import { ObjectId } from 'mongodb';
-import { createCheckoutSession } from 'services/payment';
 import z from 'zod';
+import { stripe } from 'lib/stripe';
 
 const checkoutSchema = z.object({
   options: z.record(z.string(), z.string()),
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
 
     const orderId = new ObjectId();
 
-    const checkoutSession = await createCheckoutSession({
+    const checkoutSession = await stripe.checkout.sessions.create({
       mode: 'payment',
       submit_type: 'pay',
       payment_method_types: [

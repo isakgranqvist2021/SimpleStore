@@ -7,7 +7,7 @@ import { ProductRating } from 'components/product-rating';
 import { PageProps } from 'types/page';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
-import { getPageTitle } from 'config/store-config';
+import { getPageTitle, storeConfig } from 'config/store-config';
 import models from 'models/models';
 
 export async function generateMetadata(
@@ -17,7 +17,10 @@ export async function generateMetadata(
   const product = await models.product.findOne({ slug: params.slug }).lean();
 
   if (!product) {
-    return {};
+    return {
+      title: 'Product Not Found',
+      description: storeConfig.description,
+    };
   }
 
   return {
