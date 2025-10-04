@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 import React from 'react';
 import { formatCurrency, formatDate } from 'utils';
 import { getPageTitle } from 'config/store-config';
-import Link from 'next/link';
 import models from 'models/models';
 import product from 'models/product.schema';
 
@@ -19,9 +18,9 @@ async function OrdersTable() {
       <div>
         <p>
           Please{' '}
-          <Link className="link" href="/auth/login">
+          <a className="link" href="/auth/login">
             log in
-          </Link>{' '}
+          </a>{' '}
           to see your orders.
         </p>
       </div>

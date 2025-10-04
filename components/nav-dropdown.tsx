@@ -10,7 +10,7 @@ export default function NavDropdown() {
   if (!user) {
     return (
       <li>
-        <Link href="/auth/login">My Orders</Link>
+        <a href="/auth/login">My Orders</a>
       </li>
     );
   }
@@ -44,7 +44,7 @@ export default function NavDropdown() {
           <Link href="/orders">My Orders</Link>
         </li>
         <li>
-          <Link href="/auth/logout">Logout</Link>
+          <a href="/auth/logout">Logout</a>
         </li>
       </ul>
     </div>
