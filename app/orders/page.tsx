@@ -4,8 +4,9 @@ import React from 'react';
 import { formatCurrency, formatDate } from 'utils';
 import { getPageTitle } from 'config/store-config';
 import { models } from 'models/models';
-import { product } from 'models/product';
+import { ProductType } from 'models/product';
 import { connectDB } from 'lib/mongodb';
+import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: getPageTitle('My Orders'),
@@ -34,9 +35,7 @@ async function OrdersTable() {
     .find({
       email: session.user.email,
     })
-    .populate<typeof models.product & { product: typeof product.model }>(
-      'product',
-    )
+    .populate<typeof models.product & { product: ProductType }>('product')
     .exec();
 
   if (!orders.length) {
@@ -64,7 +63,11 @@ async function OrdersTable() {
         <tbody>
           {orders.map((order) => (
             <tr key={order._id.toString()}>
-              <th>{order.product.name}</th>
+              <td>
+                <Link className="link" href={`/products/${order.product.slug}`}>
+                  {order.product.name}
+                </Link>
+              </td>
               <td>{formatDate(order.createdAt)}</td>
               <td>{formatCurrency(order.amountTotal ?? 0)}</td>
               <td className="capitalize">{order.status}</td>
