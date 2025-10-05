@@ -30,7 +30,4 @@ const model =
   (mongoose.models[name] as ProductModel) ||
   mongoose.model(name, ProductSchema);
 
-export default {
-  name,
-  model,
-};
+export const product = { name, model };

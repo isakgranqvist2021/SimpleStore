@@ -8,11 +8,14 @@ import { PageProps } from 'types/page';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { getPageTitle, storeConfig } from 'config/store-config';
-import models from 'models/models';
+import { models } from 'models/models';
+import { connectDB } from 'lib/mongodb';
 
 export async function generateMetadata(
   props: PageProps<{ slug: string }>,
 ): Promise<Metadata> {
+  await connectDB();
+
   const params = await props.params;
   const product = await models.product.findOne({ slug: params.slug }).lean();
 
@@ -42,6 +45,8 @@ export async function generateMetadata(
 }
 
 export default async function ProductPage(props: PageProps<{ slug: string }>) {
+  await connectDB();
+
   const params = await props.params;
   const session = await auth0.getSession();
 

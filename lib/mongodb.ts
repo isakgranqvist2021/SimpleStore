@@ -8,7 +8,6 @@ type MongooseGlobal = {
 };
 
 declare global {
-  // eslint-disable-next-line no-var
   var _mongoose: MongooseGlobal | undefined;
 }
 
@@ -24,11 +23,9 @@ if (!process.env.MONGO_DB_DATABASE_URL) {
   );
 }
 
-export async function connect() {
+export async function connectDB() {
   // If connection already exists and is connected, return it
-  if (globalMongoose.conn && globalMongoose.conn.isConnected) {
-    return;
-  }
+  if (globalMongoose.conn && globalMongoose.conn.isConnected) return;
 
   // If there's an in-flight connection attempt, await it
   if (!globalMongoose.promise) {
@@ -44,13 +41,7 @@ export async function connect() {
   }
 
   await globalMongoose.promise;
+
   // store back to global so HMR/dev doesn't create multiple connections
   global._mongoose = globalMongoose;
-}
-
-export async function disconnect() {
-  if (globalMongoose.conn && globalMongoose.conn.isConnected) {
-    await mongoose.disconnect();
-    globalMongoose.conn = { isConnected: false };
-  }
 }

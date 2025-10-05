@@ -1,7 +1,10 @@
 import fs from 'fs';
-import models from 'models/models';
+import { connectDB } from 'lib/mongodb';
+import { models } from 'models/models';
 
 export async function GET(request: Request) {
+  await connectDB();
+
   const data = fs.readFileSync('data.json');
   const parsedData = JSON.parse(data.toString());
 

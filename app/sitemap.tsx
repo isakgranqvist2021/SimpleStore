@@ -1,7 +1,9 @@
-import models from 'models/models';
+import { connectDB } from 'lib/mongodb';
+import { models } from 'models/models';
 import { MetadataRoute } from 'next';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await connectDB();
   const products = await models.product.find();
 
   return [

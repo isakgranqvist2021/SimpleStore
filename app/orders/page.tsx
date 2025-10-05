@@ -3,14 +3,17 @@ import { Metadata } from 'next';
 import React from 'react';
 import { formatCurrency, formatDate } from 'utils';
 import { getPageTitle } from 'config/store-config';
-import models from 'models/models';
-import product from 'models/product.schema';
+import { models } from 'models/models';
+import { product } from 'models/product';
+import { connectDB } from 'lib/mongodb';
 
 export const metadata: Metadata = {
   title: getPageTitle('My Orders'),
 };
 
 async function OrdersTable() {
+  await connectDB();
+
   const session = await auth0.getSession();
 
   if (!session?.user?.email) {

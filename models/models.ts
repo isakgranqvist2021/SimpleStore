@@ -1,11 +1,9 @@
-import order from './order.schema';
-import product from './product.schema';
-import review from './review.schema';
+import { order } from './order';
+import { product } from './product';
+import { review } from './review';
 
-const models = {
+export const models = {
   product: product.model,
   order: order.model,
   review: review.model,
 };
-
-export default models;

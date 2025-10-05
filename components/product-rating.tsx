@@ -1,4 +1,4 @@
-import { ReviewType } from 'models/review.schema';
+import { ReviewType } from 'models/review';
 
 interface ProductRatingProps {
   reviews: ReviewType[];

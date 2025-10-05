@@ -1,10 +1,11 @@
 import { allowedCountries } from 'config/shipping';
 import { storeConfig } from 'config/store-config';
-import models from 'models/models';
+import { models } from 'models/models';
 import { auth0 } from 'lib/auth0';
 import { ObjectId } from 'mongodb';
 import z from 'zod';
 import { stripe } from 'lib/stripe';
+import { connectDB } from 'lib/mongodb';
 
 const checkoutSchema = z.object({
   options: z.record(z.string(), z.string()),
@@ -13,6 +14,8 @@ const checkoutSchema = z.object({
 
 export async function POST(req: Request) {
   try {
+    await connectDB();
+
     const parsedCheckoutParams = checkoutSchema.parse(await req.json());
     const product = await models.product
       .findById(parsedCheckoutParams.productId)

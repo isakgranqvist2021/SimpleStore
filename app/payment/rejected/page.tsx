@@ -1,7 +1,8 @@
 import { CheckoutAgainButton } from 'components/checkout-again-button';
 import { getPageTitle } from 'config/store-config';
+import { connectDB } from 'lib/mongodb';
 import { stripe } from 'lib/stripe';
-import models from 'models/models';
+import { models } from 'models/models';
 import { Metadata } from 'next';
 import React from 'react';
 import { PageProps } from 'types/page';
@@ -46,6 +47,8 @@ export default async function Rejected(
 }
 
 async function rejectOrder(orderId?: string) {
+  await connectDB();
+
   if (typeof orderId !== 'string') {
     throw new Error('Invalid order id');
   }

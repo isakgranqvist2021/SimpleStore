@@ -3,9 +3,10 @@ import Link from 'next/link';
 import React from 'react';
 import type { PageProps } from 'types/page';
 import { getPageTitle, storeConfig } from 'config/store-config';
-import models from 'models/models';
+import { models } from 'models/models';
 import { sendEmail } from 'lib/resend';
 import { stripe } from 'lib/stripe';
+import { connectDB } from 'lib/mongodb';
 
 export const metadata: Metadata = {
   title: getPageTitle('Payment Accepted'),
@@ -59,6 +60,8 @@ export default async function Accepted(
 }
 
 async function acceptOrder(orderId?: string) {
+  await connectDB();
+
   if (typeof orderId !== 'string') {
     throw new Error('Invalid order id');
   }

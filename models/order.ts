@@ -1,6 +1,6 @@
 import { storeConfig } from 'config/store-config';
 import mongoose, { InferSchemaType, Model } from 'mongoose';
-import product from './product.schema';
+import { product } from './product';
 
 const name = 'Order';
 
@@ -34,7 +34,7 @@ export type OrderModel = Model<OrderType>;
 const model =
   (mongoose.models[name] as OrderModel) || mongoose.model(name, OrderSchema);
 
-export default {
+export const order = {
   name,
   model,
 };

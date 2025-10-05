@@ -1,10 +1,12 @@
 import { ProductRating } from 'components/product-rating';
-import models from 'models/models';
+import { connectDB } from 'lib/mongodb';
+import { models } from 'models/models';
 import Link from 'next/link';
 import React from 'react';
 import { formatCurrency } from 'utils';
 
 export default async function HomePage() {
+  await connectDB();
   const products = await models.product.find().lean();
 
   return (

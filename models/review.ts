@@ -14,7 +14,4 @@ export type ReviewModel = Model<ReviewType>;
 const model =
   (mongoose.models[name] as ReviewModel) || mongoose.model(name, ReviewSchema);
 
-export default {
-  name,
-  model,
-};
+export const review = { name, model };

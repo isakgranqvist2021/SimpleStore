@@ -1,6 +1,6 @@
 'use client';
 
-import { OptionType } from 'models/product.schema';
+import { OptionType } from 'models/product';
 import { useContinueToPayment } from 'hooks/use-continue-to-payment';
 import React from 'react';
 
