@@ -39,10 +39,7 @@ async function NavDropdown() {
       >
         {session.user.picture ? (
           <div className="w-8 rounded-full">
-            <img
-              alt="Tailwind CSS Navbar component"
-              src={session.user.picture}
-            />
+            <img alt={session.user.name} src={session.user.picture} />
           </div>
         ) : (
           <div className="avatar avatar-placeholder">

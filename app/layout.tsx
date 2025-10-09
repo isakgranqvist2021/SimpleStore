@@ -15,6 +15,8 @@ export const metadata: Metadata = {
 export default async function RootLayout(props: React.PropsWithChildren) {
   return (
     <html data-theme="lofi" lang="en">
+      <link rel="icon" href={storeConfig.favicon} />
+
       <body className="min-h-screen flex flex-col">
         {globalBanner.enabled && <Banner>{globalBanner.text}</Banner>}
 

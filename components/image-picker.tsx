@@ -18,6 +18,7 @@ export function ImagePicker(props: ImagePickerProps) {
           alt="Product image"
         />
       </figure>
+
       <div className="flex gap-2 mt-2 flex-wrap">
         {props.images.map((image, index) => (
           <img

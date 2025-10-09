@@ -15,6 +15,8 @@ export const storeConfig = {
   },
 
   defaultCurrency: 'EUR',
+
+  favicon: 'https://storage.googleapis.com/public_cdn_bucket/favicon.ico',
 };
 
 export const globalBanner = {
