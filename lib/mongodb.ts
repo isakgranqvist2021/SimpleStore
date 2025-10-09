@@ -1,9 +1,7 @@
 import mongoose from 'mongoose';
 
 type MongooseGlobal = {
-  conn: {
-    isConnected?: boolean;
-  } | null;
+  conn: { isConnected?: boolean } | null;
   promise?: Promise<typeof mongoose> | null;
 };
 
@@ -17,7 +15,7 @@ const globalMongoose: MongooseGlobal = global._mongoose || {
 };
 const MONGODB_URI = process.env.MONGO_DB_DATABASE_URL!;
 
-if (!process.env.MONGO_DB_DATABASE_URL) {
+if (!MONGODB_URI) {
   throw new Error(
     'Please define the MONGO_DB_DATABASE_URL environment variable inside .env',
   );

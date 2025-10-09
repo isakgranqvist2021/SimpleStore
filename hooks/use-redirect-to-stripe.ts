@@ -1,4 +1,5 @@
 import { type Stripe, loadStripe } from '@stripe/stripe-js';
+import { toast } from 'sonner';
 
 let stripePromise: Promise<Stripe | null>;
 
@@ -15,6 +16,7 @@ export function useRedirectToStripe() {
     const stripe = await getStripe();
 
     if (!stripe) {
+      toast.error('Could not connect to payment provider.');
       throw new Error('Stripe.js failed to load.');
     }
 
