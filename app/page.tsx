@@ -1,4 +1,3 @@
-import { ProductRating } from 'components/product-rating';
 import { connectDB } from 'lib/mongodb';
 import { models } from 'models/models';
 import Link from 'next/link';
@@ -39,8 +38,6 @@ export default async function HomePage() {
               <h2 className="card-title">{product.name}</h2>
 
               <p>{product.shortDescription}</p>
-
-              <ProductRating starClassName="size-4" reviews={[]} />
             </div>
           </Link>
         ))}

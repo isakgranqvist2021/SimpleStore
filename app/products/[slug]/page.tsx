@@ -57,6 +57,12 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
     return redirect('/');
   }
 
+  const reviews = await models.review
+    .find({
+      productId: product._id,
+    })
+    .lean();
+
   return (
     <div>
       <section className="container mx-auto px-2 py-8">
@@ -77,7 +83,7 @@ export default async function ProductPage(props: PageProps<{ slug: string }>) {
               )}
             </div>
 
-            <ProductRating className="gap-1" reviews={[]} />
+            <ProductRating className="gap-1" reviews={reviews} />
 
             <p className="whitespace-pre-wrap text-sm">{product.description}</p>
 

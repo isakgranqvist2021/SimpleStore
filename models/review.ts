@@ -3,7 +3,11 @@ import mongoose, { InferSchemaType, Model } from 'mongoose';
 const name = 'Review';
 
 const ReviewSchema = new mongoose.Schema({
-  id: { type: String, required: true },
+  productId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'Product',
+  },
   rating: { type: Number, required: true },
   comment: { type: String, default: null },
 });
