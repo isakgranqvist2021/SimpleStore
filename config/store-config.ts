@@ -1,3 +1,5 @@
+import { Theme } from './theme';
+
 export const storeConfig = {
   name: 'One Product Store',
   slogan: 'The best product in the world',
@@ -17,6 +19,8 @@ export const storeConfig = {
   defaultCurrency: 'EUR',
 
   favicon: 'https://storage.googleapis.com/public_cdn_bucket/favicon.ico',
+
+  theme: Theme.cmyk,
 };
 
 export const globalBanner = {

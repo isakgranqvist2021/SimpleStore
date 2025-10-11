@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default async function RootLayout(props: React.PropsWithChildren) {
   return (
-    <html data-theme="lofi" lang="en">
+    <html data-theme={storeConfig.theme} lang="en">
       <link rel="icon" href={storeConfig.favicon} />
 
       <body className="min-h-screen flex flex-col">
