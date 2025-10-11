@@ -20,7 +20,7 @@ export const storeConfig = {
 
   favicon: 'https://storage.googleapis.com/public_cdn_bucket/favicon.ico',
 
-  theme: Theme.cmyk,
+  theme: Theme.light,
 };
 
 export const globalBanner = {
