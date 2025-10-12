@@ -97,23 +97,23 @@ async function acceptOrder(orderId?: string) {
 
 async function sendOrderSuccessfulEmail(email: string) {
   return await sendEmail(email, {
-    subject: 'Your order was successful – thank you for shopping with us!',
+    subject: 'Your order was successful - thank you for shopping with us!',
     html: `
       <p>Hi there,</p>
 
       <p>Good news — your order has been successfully placed! 🎉</p>
 
       <p>
-        Thank you for your purchase. We’re preparing your items and will keep you
+        Thank you for your purchase. We're preparing your items and will keep you
         updated every step of the way.
       </p>
 
       <p>
-        <strong>Order updates</strong> — You’ll receive notifications by email as
-        soon as your order is processed and when it’s on its way to you.
+        <strong>Order updates</strong> — You'll receive notifications by email as
+        soon as your order is processed and when it's on its way to you.
       </p>
 
-      <p>If you have any questions, simply send your question to ${storeConfig.contactEmail} and we’ll be happy to help.</p>
+      <p>If you have any questions, simply send your question to ${storeConfig.contactEmail} and we'll be happy to help.</p>
 
       <p>Best regards,<br/>
       ${storeConfig.name}</p>
