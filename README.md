@@ -7,7 +7,7 @@ A small ecommerce app to experiment with "print on demand" services
 
 To run this project, you will need to add the following environment variables to your .env file. 
 
-Create a .env file in the app directory and add these variables.
+Create a .env file in the root directory and add these variables.
 
 
 `NODE_ENV`
